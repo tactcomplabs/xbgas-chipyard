@@ -1,0 +1,10 @@
+{
+  "name" : "axinsimple-bare",
+  "workdir" : "..",
+  "base" : "bare-base.json",
+  "host-init" : "build.sh",
+  "bin" : "tests/bare/axinsimple.riscv",
+  "testing" : {
+    "refDir" : "test-reference/bare-axinsimple"
+  }
+}
