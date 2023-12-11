@@ -71,10 +71,18 @@ SRCDIR="$(pwd)/toolchains/${TOOLCHAIN}"
 [ -d "${SRCDIR}" ] || die "unsupported toolchain: ${TOOLCHAIN}"
 . ./scripts/build-util.sh
 
+echo "Installing Linux and Newlib riscv-gnu-toolchains"
+module_run riscv-gnu-toolchain make clean
+module_run riscv-gnu-toolchain ./configure --prefix="${RISCV}"
+module_run riscv-gnu-toolchain make linux
+module_run riscv-gnu-toolchain make clean
+module_run riscv-gnu-toolchain ./configure --prefix="${RISCV}"
+module_run riscv-gnu-toolchain make
+
 echo '==>  Installing Spike'
 # disable boost explicitly for https://github.com/riscv-software-src/riscv-isa-sim/issues/834
 # since we don't have it in our requirements
-module_all riscv-isa-sim --prefix="${RISCV}" --with-boost=no --with-boost-asio=no --with-boost-regex=no
+CC=mpicc CXX=mpicxx module_build riscv-isa-sim --prefix="${RISCV}" --with-boost=no --with-boost-asio=no --with-boost-regex=no
 # build static libfesvr library for linking into firesim driver (or others)
 echo '==>  Installing libfesvr static library'
 OLDCLEANAFTERINSTALL=$CLEANAFTERINSTALL
@@ -84,10 +92,10 @@ cp -p "${SRCDIR}/riscv-isa-sim/build/libfesvr.a" "${RISCV}/lib/"
 CLEANAFTERINSTALL=$OLDCLEANAFTERINSTALL
 
 echo '==>  Installing Proxy Kernel'
-CC= CXX= module_all riscv-pk --prefix="${RISCV}" --host=riscv${XLEN}-unknown-elf
+CC= CXX= module_build riscv-pk --prefix="${RISCV}" --host=riscv${XLEN}-unknown-elf
 
 echo '==>  Installing RISC-V tests'
-module_all riscv-tests --prefix="${RISCV}/riscv${XLEN}-unknown-elf" --with-xlen=${XLEN}
+module_build riscv-tests --prefix="${RISCV}/riscv${XLEN}-unknown-elf" --with-xlen=${XLEN}
 
 echo '==> Installing espresso logic minimizer'
 (
@@ -100,7 +108,7 @@ echo '==> Installing espresso logic minimizer'
 # Common tools (not in any particular toolchain dir)
 
 echo '==>  Installing libgloss'
-CC= CXX= SRCDIR="$(pwd)/toolchains" module_all libgloss --prefix="${RISCV}/riscv${XLEN}-unknown-elf" --host=riscv${XLEN}-unknown-elf
+CC= CXX= SRCDIR="$(pwd)/toolchains" module_build libgloss --prefix="${RISCV}/riscv${XLEN}-unknown-elf" --host=riscv${XLEN}-unknown-elf
 
 cd $RDIR
 if [ $TOOLCHAIN == "riscv-tools" ]; then

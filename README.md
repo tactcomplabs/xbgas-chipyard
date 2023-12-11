@@ -1,3 +1,25 @@
+# xbgas-chipyard setup instructions
+
+## Prerequisites 
+1. Conda (tested with 23.7.4, anaconda install)
+2. OpenMPI (tested with 4.1.5)
+3. Exuberant Ctags (tested with 5.9)
+> Confirm that **Exuberant** ctags is installed and not GNU ctags, the latter is incompatible and will mask the former when called. `ctags --version`
+4. Clear RISCV environment variable
+
+## Setup
+
+```
+git clone git@github.com:tactcomplabls/xbgas-chipyard
+cd xbgas-chipyard
+./build-setup.sh -s 3 riscv-tools
+./scripts/build-toolchain-extra.sh --prefix=$CHIPYARD_ROOT/.conda-env/riscv-tools --clean-after-install riscv-tools
+```
+
+## Use
+
+Always start with a clean environment, new terminal preferred, and run `source env.sh` from the root directory before development.
+
 ![CHIPYARD](https://github.com/ucb-bar/chipyard/raw/main/docs/_static/images/chipyard-logo-full.png)
 
 # Chipyard Framework [![Test](https://github.com/ucb-bar/chipyard/actions/workflows/chipyard-run-tests.yml/badge.svg)](https://github.com/ucb-bar/chipyard/actions)
