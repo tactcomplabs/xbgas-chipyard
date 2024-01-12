@@ -1,4 +1,5 @@
 channels:
+    - tactcomplabs
     - ucb-bar
     - conda-forge
     - litex-hub
@@ -23,7 +24,7 @@ dependencies:
     # bundle FireSim driver with deps into installer shell-script
     - constructor
 
-    - gcc
+    - gcc<=12.*
     - gxx
     - sysroot_linux-64=2.17 # needed to match pre-built CI XRT glibc version
     - conda-gcc-specs
@@ -79,7 +80,7 @@ dependencies:
     - zlib
     - vim
     - git
-    - openjdk
+    - openjdk==17.*
     - gengetopt
     - libffi
     - expat
@@ -154,3 +155,4 @@ dependencies:
     - fsspec
     - pip:
         - fab-classic>=1.19.2
+    - openmpi<=3.1.2
