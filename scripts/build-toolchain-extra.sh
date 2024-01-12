@@ -71,14 +71,6 @@ SRCDIR="$(pwd)/toolchains/${TOOLCHAIN}"
 [ -d "${SRCDIR}" ] || die "unsupported toolchain: ${TOOLCHAIN}"
 . ./scripts/build-util.sh
 
-echo "Installing Linux and Newlib riscv-gnu-toolchains"
-module_run riscv-gnu-toolchain make clean
-module_run riscv-gnu-toolchain ./configure --prefix="${RISCV}"
-module_run riscv-gnu-toolchain make linux
-module_run riscv-gnu-toolchain make clean
-module_run riscv-gnu-toolchain ./configure --prefix="${RISCV}"
-module_run riscv-gnu-toolchain make
-
 echo '==>  Installing Spike'
 # disable boost explicitly for https://github.com/riscv-software-src/riscv-isa-sim/issues/834
 # since we don't have it in our requirements
